@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: UTF-8 -*-
 from appium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
@@ -22,10 +20,11 @@ driver = webdriver.Remote(
     desired_capabilities=CAPS
 )
 
+### Step 1
 driver.get('https://www.cathaybk.com.tw/cathaybk/')
-driver.save_screenshot("step1.png")
+# driver.save_screenshot("step1.png")
 
-# 左上 menu
+### Step 2
 prod_list_elem = WebDriverWait(driver, 10).until(
     EC.presence_of_element_located(
         (By.XPATH, "//div[@class='cubre-o-header__burger']")
@@ -38,17 +37,20 @@ prod_intro_elem = WebDriverWait(driver, 10).until(
     ))
 prod_intro_elem.click()
 
-cred_card_elem = WebDriverWait(driver, 20).until(
+cred_card_elem = WebDriverWait(driver, 10).until(
     EC.element_to_be_clickable(
         (By.XPATH, "//div[@class='cubre-a-menuSortBtn' and contains(text(), '信用卡')]")
     ))
 cred_card_elem.click()
-driver.save_screenshot("step2.png")
+# driver.save_screenshot("step2.png")
 
 count = len(driver.find_elements(
     By.XPATH, "//div[@class='cubre-a-menuSortBtn cubre-u-mbOnly' and contains(text(), '信用卡')]/following-sibling::a")
 )
 
-print(count)  # 共8個
+### Step 3
+driver.find_element(By.XPATH, "//a[@id='lnk_Link' and contains(text(), '卡片介紹')]").click()
+cancel_cards = driver.find_elements(By.XPATH, "//div[@class='cubre-m-compareCard__title' and contains(text(), '停發')]")
+count_cancelCard = len(cancel_cards)
 
 driver.quit()
